@@ -77,9 +77,12 @@ class PaymentController
 {
     public function __invoke(PayKeeperClient $client)
     {
+        $paymentSystems = $client->getPaymentSystems();
+        $paymentSystemIds = array_map(static fn (PaymentSystem $ps) => $ps->id, $paymentSystems);
+
         $payments = $client->payments->getList(
             start: new DateTime('2024-09-01'),
-            end: new DateTime('2024-09-29'),
+            end: new DateTime('2024-09-30'),
             statuses: PaymentStatuses::cases(),
             paymentSystemIds: $paymentSystemIds,
         );
