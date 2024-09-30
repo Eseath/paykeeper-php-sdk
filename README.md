@@ -2,6 +2,27 @@
 
 https://docs.paykeeper.ru/
 
+## Installation
+
+Add to composer.json:
+
+```json
+{
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/eseath/paykeeper-php-sdk.git"
+        }
+    ]
+}
+```
+
+Require the package via composer:
+
+```shell
+composer require eseath/paykeeper-sdk
+```
+
 ## Example for Laravel
 
 config/services.php:
