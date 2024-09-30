@@ -1,4 +1,6 @@
 {
+    "name": "eseath/paykeeper-sdk",
+    "type": "library",
     "autoload": {
         "psr-4": {
             "Eseath\\PayKeeper\\": "src/"
