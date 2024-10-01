@@ -11,7 +11,6 @@ use Eseath\PayKeeper\Enums\InvoiceStatuses;
 use Eseath\PayKeeper\Exceptions\InvoiceNotFoundException;
 use Eseath\PayKeeper\PayKeeperClient;
 use Eseath\PayKeeper\Responses\InvoiceListcountResponse;
-use GuzzleHttp\Psr7\Query;
 use stdClass;
 
 class Invoices
@@ -35,15 +34,13 @@ class Invoices
     {
         $statuses = array_map(static fn (InvoiceStatuses $case) => $case->name, $statuses);
 
-        $queryParams = Query::build([
+        $items = $this->client->request('GET', '/info/invoice/list/', [
             'start_date' => $startDate->format('Y-m-d'),
             'end_date' => $endDate->format('Y-m-d'),
             'limit' => $limit,
             'from' => $from,
             'status[]' => $statuses,
         ]);
-
-        $items = $this->client->request('GET', '/info/invoice/list/', $queryParams);
 
         return array_map(static fn (stdClass $item) => Invoice::createFrom((array) $item), $items);
     }
@@ -71,13 +68,11 @@ class Invoices
     {
         $statuses = array_map(static fn (InvoiceStatuses $case) => $case->name, $statuses);
 
-        $queryParams = Query::build([
+        $data = $this->client->request('GET', '/info/invoice/listcount/', [
             'start_date' => $startDate->format('Y-m-d'),
             'end_date' => $endDate->format('Y-m-d'),
             'status[]' => $statuses,
         ]);
-
-        $data = $this->client->request('GET', '/info/invoice/listcount/', $queryParams);
 
         return new InvoiceListcountResponse(
             statuses: array_map(static fn ($status) => new InvoiceStatusCounter(

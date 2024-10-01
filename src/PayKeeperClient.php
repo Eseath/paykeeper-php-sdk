@@ -9,6 +9,7 @@ use Eseath\PayKeeper\Exceptions\InvoiceNotFoundException;
 use Eseath\PayKeeper\Services\Invoices;
 use Eseath\PayKeeper\Services\Payments;
 use GuzzleHttp\Client;
+use GuzzleHttp\Psr7\Query;
 use GuzzleHttp\RequestOptions;
 use RuntimeException;
 use stdClass;
@@ -55,7 +56,7 @@ class PayKeeperClient
     public function request(
         string $method,
         string $uri,
-        array|string $queryParams = [],
+        array $queryParams = [],
         array $data = [],
     ): stdClass | array
     {
@@ -63,7 +64,7 @@ class PayKeeperClient
             RequestOptions::HEADERS => [
                 'Authorization' => 'Basic ' . base64_encode("$this->username:$this->password"),
             ],
-            RequestOptions::QUERY => $queryParams,
+            RequestOptions::QUERY => Query::build($queryParams),
         ];
 
         if ($method === 'POST' || $method === 'PUT') {

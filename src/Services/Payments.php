@@ -49,7 +49,7 @@ class Payments
     {
         $statuses = array_map(static fn (PaymentStatuses $case) => $case->name, $statuses);
 
-        $queryParams = Query::build([
+        $items = $this->client->request('GET', '/info/payments/bydate/', [
             'start' => $start->format('Y-m-d'),
             'end' => $end->format('Y-m-d'),
             'limit' => $limit,
@@ -58,8 +58,6 @@ class Payments
             'status[]' => $statuses,
             'query' => $query,
         ]);
-
-        $items = $this->client->request('GET', '/info/payments/bydate/', $queryParams);
 
         return array_map(static fn (stdClass $item) => ListedPayment::createFrom((array) $item), $items);
     }
