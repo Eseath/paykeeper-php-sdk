@@ -11,7 +11,7 @@ use ReflectionNamedType;
 
 abstract class DTO
 {
-    public static function createFrom(array $data)
+    public static function createFrom(array $data): static
     {
         $reflectionClass = new ReflectionClass(static::class);
         $parameters = [];
