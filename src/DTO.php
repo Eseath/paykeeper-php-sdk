@@ -28,7 +28,7 @@ abstract class DTO
             }
 
 
-            $propertyValue = $data[$fieldName];
+            $propertyValue = $data[$fieldName] ?? null;
             $propertyType = $property->getType();
 
             if ($propertyValue && $propertyType->getName() === 'DateTime') {
