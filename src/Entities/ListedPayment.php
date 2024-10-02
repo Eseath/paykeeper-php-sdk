@@ -13,7 +13,7 @@ class ListedPayment extends DTO
     public function __construct(
         public readonly int $id,
         public readonly float $pay_amount,
-        public readonly float $refund_amount,
+        public readonly ?float $refund_amount,
         public readonly ?string $clientid,
         public readonly ?string $orderid,
         public readonly int $payment_system_id,
