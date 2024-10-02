@@ -64,7 +64,7 @@ class PayKeeperClient
             RequestOptions::HEADERS => [
                 'Authorization' => 'Basic ' . base64_encode("$this->username:$this->password"),
             ],
-            RequestOptions::QUERY => Query::build($queryParams),
+            RequestOptions::QUERY => Query::build($queryParams, treatBoolsAsInts: false),
         ];
 
         if ($method === 'POST' || $method === 'PUT') {
