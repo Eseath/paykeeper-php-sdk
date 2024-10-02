@@ -10,6 +10,7 @@ use Eseath\PayKeeper\Entities\Payment;
 use Eseath\PayKeeper\Enums\PaymentStatuses;
 use Eseath\PayKeeper\PayKeeperClient;
 use GuzzleHttp\Psr7\Query;
+use RuntimeException;
 use stdClass;
 
 class Payments
@@ -58,6 +59,21 @@ class Payments
             'status[]' => $statuses,
             'query' => $query,
         ]);
+
+        return array_map(static fn (stdClass $item) => ListedPayment::createFrom((array) $item), $items);
+    }
+
+    public function search(string $query, DateTime $startDate, DateTime $endDate): array
+    {
+        try {
+            $items = $this->client->request('GET', '/info/payments/search/', [
+                'beg_date' => $startDate->format('Y-m-d'),
+                'end_date' => $endDate->format('Y-m-d'),
+                'query' => $query,
+            ]);
+        } catch (RuntimeException) {
+            $items = [];
+        }
 
         return array_map(static fn (stdClass $item) => ListedPayment::createFrom((array) $item), $items);
     }
